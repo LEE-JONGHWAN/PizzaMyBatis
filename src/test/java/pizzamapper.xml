@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pizzamapper">
+	<!-- Add SQL statements -->
+	<insert id="createPizzaOrder" parameterType="java.util.Map"
+		useGeneratedKeys="true" keyProperty="order_id">
+			insert into pizza_order (cust_id)
+			select cust_id from customer c
+			where cust_name = #{cust_name};
+	</insert>
+	
+	<insert id="createOrderItem" parameterType="java.util.Map"
+		useGeneratedKeys="true" keyProperty="item_id">
+			insert into order_item (order_id, menu_id)
+			select #{order_id}, pm.menu_id 
+			from pizza_menu pm
+			where pm.menu_name = #{menu_name};
+	</insert>
+
+</mapper>
