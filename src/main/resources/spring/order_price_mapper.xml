@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="petmapper">
+	<!-- Add SQL statements -->
+	<select id="getOrderPrices" parameterType = "java.lang.String"
+			resultType="OrderPriceDVO">
+		select po.order_id as `주문ID`, c.cust_id `고객ID`, 
+			date_format(po.order_time, '%Y-%m-%d') as `주문일`,
+			sum(pm.menu_price * oi.count) as `소계`
+		from customer c
+			join pizza_order po on po.cust_id = c.cust_id 
+			join order_item oi on oi.order_id = po.order_id 
+			join pizza_menu pm on pm.menu_id = oi.menu_id 
+		where c.cust_name = #{cust_name} 
+		group by 주문일
+		order by 주문일 desc;
+	</select>
+</mapper>
